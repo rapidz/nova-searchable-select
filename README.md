@@ -40,12 +40,13 @@ SearchableSelect::make('Content', 'content_id')
     ->nullable()
 ```
 
-But also two additional options:
+But also three additional options:
 
 ```php
 SearchableSelect::make('Content', 'content_id')
     ->resource("contents")
     ->label("custom_label_field") // Defaults to the static $title attribute of the resource class
+    ->labelPrefix("custom_prefix_field") // Allows you to prefix the label field with one other field, i.e. "code":"label"
     ->value("custom_value_field") // Defaults to 'id'
 ```
 
@@ -67,4 +68,12 @@ Another option is to define the maximum number of items shown in the search. (De
 SearchableSelect::make("Content", "content_id")
                 ->resource("contents")
                 ->max(10)
+```
+
+You can use the base model's search method instead of the Nova resource's search method with `useBaseSearch()`.
+
+```php
+SearchableSelect::make('Content', 'content_id')
+    ->resource("contents")
+    ->useBaseSearch()
 ```

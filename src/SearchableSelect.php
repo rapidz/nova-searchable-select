@@ -19,9 +19,11 @@ class SearchableSelect extends Select
         parent::__construct($name, $attribute, $resolveCallback);
         $this->withMeta([
             "label" => null,
+            "labelPrefix" => null,
             "valueField" => "id",
             "isMultiple" => false,
-            "max" => 20
+            "max" => 20,
+            "searchable" => false
         ]);
     }
 
@@ -65,6 +67,13 @@ class SearchableSelect extends Select
         ]);
     }
 
+    public function labelPrefix($labelPrefix)
+    {
+        return $this->withMeta([
+            "labelPrefix" => $labelPrefix
+        ]);
+    }
+
     public function value($value)
     {
         return $this->withMeta([
@@ -88,5 +97,19 @@ class SearchableSelect extends Select
 
             return $labelValue;
         });
+    }
+
+    public function loadResourcesOnNew()
+    {
+        return $this->withMeta([
+            "loadResourcesOnNew" => true
+        ]);
+    }
+    
+    public function useBaseSearch($useBaseSearch = true)
+    {
+        return $this->withMeta([
+            "searchable" => $useBaseSearch
+        ]);
     }
 }

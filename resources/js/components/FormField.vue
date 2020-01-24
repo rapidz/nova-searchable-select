@@ -9,7 +9,7 @@
           :data="resource"
         >
           <div class="flex items-center px-4 py-1">
-            <div class="mr-2">{{resource[field.label]}}</div>
+            <div class="mr-2">{{resource.display}}</div>
             <div @click="removeResource(resource)" class="cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path
@@ -101,6 +101,7 @@ export default {
    */
   mounted() {
     this.initializeComponent()
+    this.$nextTick(this.loadResourcesOnNew);
   },
 
   methods: {
@@ -254,6 +255,16 @@ export default {
           r => r[this.field.valueField] == this.selectedResourceId
         )
       }
+    },
+
+    /**
+     * When not editing and loadsResourcesOnNew is enable we preload a list of resources
+     */
+    loadResourcesOnNew() {
+      if ('loadResourcesOnNew' in this.field && this.field.loadResourcesOnNew && !this.editingExistingResource) {
+        this.search = ''
+        this.getAvailableResources('')
+      }
     }
   },
 
@@ -287,7 +298,9 @@ export default {
       return {
         params: {
           search: this.search,
+          searchable: this.field.searchable == true ? 1 : 0,
           label: this.field.label,
+          labelPrefix: this.field.labelPrefix,
           value: this.field.valueField
         }
       }
